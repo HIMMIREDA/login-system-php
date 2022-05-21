@@ -59,6 +59,7 @@ function validate(array $data,array $fields,array $messages=[]) : array
                 $pass=$fn($data,$field,...$params);
                 if(!$pass){
                     $errors[$field]=sprintf($messages[$field][$rule_name]??$validation_errors[$rule_name],$field,...$params);
+                    
                 }
             }
 
@@ -135,7 +136,8 @@ function is_same(array $data,string $field,string $other):bool{
 
 function is_secure(array $data,string $field):bool{
     if(!isset($data[$field])){
-        return true;
+        
+        return false;
     }
     $pattern="#.*^(?=.{8,64})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#";
     return preg_match($pattern,$data[$field]);
