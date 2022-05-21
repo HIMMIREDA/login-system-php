@@ -1,59 +1,18 @@
 <?php 
   require __DIR__."/../src/bootstrap.php";
   
-  $errors=[];
-  $inputs=[];
-
-  if(is_post_request()){
-    
-      $fields=[
-        "username"=>"string | required | between:3,25 | username",
-        "email"=>"email | required | email ",
-        "password"=>"string | required | secure",
-        "password2"=>"string | required | same:password",
-        "agree"=>"string | required"
-      ];
-
-      $messages=[
-        "password2"=>[
-          "required"=>"Please enter the password again",
-          "same"=>"passwords dont match"
-        ],
-        "agree"=>[
-          "required"=>"you need to agree to the term of services to register"
-          ]
-      ];
-
-      [$inputs,$errors]=filter($_POST,$fields,$messages);
-      if($errors){
-        redirect_with("register.php",[
-          "inputs"=>$inputs,
-          "errors"=>$errors
-        ]);
-      }
-
-      if(register_user($inputs["email"],$inputs["username"],$inputs["password"])){
-        redirect_with_message("login.php","Your account has been created successfully check your inbox to activate your account.Please Login here.");
-      }
-  }elseif(is_get_request()){
-    [$inputs,$errors]=session_flash("inputs","errors");
-    
-  }
-
-
-
+  require __DIR__."/../src/register.php";
 
 ?>
 
 <?php view("header",["title"=>"Register"]) ?>
 
 
-<form action="register.php" method="POST" class="border border-2 rounded-3 p-5 bg-white" style="width: 50vmin;">
-  <header>
-    
+<form action="register.php" method="POST" class="border border-2 rounded-3 p-5 bg-white container-sm mt-5" style="max-width: 600px;">
+  <?php flash() ?>
 
     <h1 class="text-center">Sign Up</h1>
-  </header>
+  
 
   
     <div>

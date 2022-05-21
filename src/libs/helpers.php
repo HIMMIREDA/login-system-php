@@ -57,8 +57,5 @@ function session_flash(...$keys){
 
 }
 
-function register_user($email,$username,$password):bool{
-    echo "registered";
-    return false;
-}
+
 ?>
