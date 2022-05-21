@@ -1,6 +1,5 @@
 <?php
-require __DIR__."/sanitize.php";
-require __DIR__."/validate.php";
+
 
 function filter(array $data,array $fields,array $messages=[]):array{
     $sanitization_rules=[];

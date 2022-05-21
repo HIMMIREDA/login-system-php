@@ -3,7 +3,23 @@
   
 
   if(is_post_request()){
+      $fields=[
+        "username"=>"string | required | between:3,25 | unique:users,username",
+        "email"=>"email | required | email | unique:users,email",
+        "password"=>"string | required | secure",
+        "agree"=>"string | required"
+      ];
 
+      $messages=[
+        "password2"=>[
+          "required"=>"Please enter the password again","same"=>"passwords dont match"
+        ],
+        "agree"=>[
+          "required"=>"you need to agree to the term of services to register"
+          ]
+      ];
+
+      [$inputs,$errors]=filter($_POST,$fields,$messages);
   }
 
 
@@ -14,7 +30,7 @@
 <?php view("header",["title"=>"Register"]) ?>
 
 
-<form action="register.php" method="POST" class="border border-2 rounded-3 w-50 p-5 bg-white">
+<form action="register.php" method="POST" class=" w-50 p-5 bg-white">
   <header>
     <h1 class="text-center">Sign Up</h1>
   </header>

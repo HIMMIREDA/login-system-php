@@ -11,4 +11,4 @@
 
   </head>
   <body>
-    <main class="vh-100 d-flex justify-content-center align-items-center bg-light">
+    <main class="border border-2 rounded-3 vh-100 d-flex justify-content-center align-items-center bg-light">
