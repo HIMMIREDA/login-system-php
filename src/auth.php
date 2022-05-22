@@ -17,23 +17,25 @@ function register_user(string $email,string $username,string $password,bool $is_
 
 function find_user_by_username(string $username){
     $pdo=db();
-    $sql="SELECT id,username,password FROM users WHERE username= :user";
+    $sql="SELECT id,username,password FROM users WHERE username=:user";
     $prpd_stmt=$pdo->prepare($sql);
     $prpd_stmt->bindValue(":user",$username,PDO::PARAM_STR);
     $prpd_stmt->execute();
-    return $prpd_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    return $prpd_stmt->fetch(PDO::FETCH_ASSOC);
 }
 function login(string $username,string $password):bool{
     $user=find_user_by_username($username);
+    
     if($user && password_verify($password,$user["password"])){
+        
         session_regenerate_id(true);//prevent session fixation attack
         $_SESSION["username"]=$user["username"];
         $_SESSION["id"]=$user["id"];
-
         return true;
 
     }
-        
+    
     return false;
     }
 

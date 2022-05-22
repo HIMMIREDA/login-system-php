@@ -17,7 +17,7 @@
             redirect_with("login.php",["inputs"=>$inputs,"errors"=>$errors]);
         }
         if(!login($inputs["username"],$inputs["password"])){
-
+            
             $errors["login"]="Invalid username or password";
             redirect_with("login.php",["inputs"=>$inputs,"errors"=>$errors]);
         }
