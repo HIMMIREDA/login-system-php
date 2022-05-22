@@ -33,13 +33,15 @@
           "errors"=>$errors
         ]);
       }
-
-      if(register_user($inputs["email"],$inputs["username"],$inputs["password"])){
+      $activation_code=generate_activation_code();
+      if(register_user($inputs["email"],$inputs["username"],$inputs["password"],$activation_code)){
+        send_activation_email($inputs["email"],$activation_code);
         redirect_with_message("login.php","Your account has been created successfully check your inbox to activate your account.Please Login here.");
       }
   }elseif(is_get_request()){
     [$inputs,$errors]=session_flash("inputs","errors");
     
+  
   }
 
 

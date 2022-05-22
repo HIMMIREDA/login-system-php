@@ -2,7 +2,7 @@
   require __DIR__."/../src/bootstrap.php";
   
   require __DIR__."/../src/register.php";
-
+  
 ?>
 
 <?php view("header",["title"=>"Register"]) ?>
@@ -10,6 +10,7 @@
 
 <form action="register.php" method="POST" class="border border-2 rounded-3 p-5 bg-white container-sm mt-5" style="max-width: 600px;">
   
+    <?php flash(); ?>
 
     <h1 class="text-center">Sign Up</h1>
   
