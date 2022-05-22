@@ -1,5 +1,5 @@
 <?php
-
+    
 
 function filter(array $data,array $fields,array $messages=[]):array{
     $sanitization_rules=[];
