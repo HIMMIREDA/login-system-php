@@ -48,14 +48,17 @@ function login(string $username,string $password,bool $remember=false):bool{
     }
 
 function is_user_logged_in():bool{
-    $token=parse_token($_COOKIE["remember_me"]??"");
+    
     if(isset($_SESSION["username"],$_SESSION["id"])){
         return true;
     }
     $token=filter_input(INPUT_COOKIE,"remember_me",FILTER_SANITIZE_STRING);
+    
     if($token && token_is_valid($token)){
+        
         $user=find_user_by_token($token);
         if($user){
+            echo "ok ok";
             $_SESSION["username"]=$user["username"];
             $_SESSION["id"]=$user["id"];
             return true;

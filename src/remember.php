@@ -55,7 +55,7 @@ function find_user_by_token(string $token){
         return null;
     }
 
-    $sql="SELECT users.id,users.username FROM users JOIN user_tokens ON users.id = user_tokens.id WHERE selector=:selector AND expiry > NOW() LIMIT 1";
+    $sql="SELECT users.id,users.username FROM users JOIN user_tokens ON users.id = user_tokens.user_id WHERE selector=:selector AND expiry > NOW() LIMIT 1";
     $prpd_stmt=db()->prepare($sql);
     $prpd_stmt->bindValue(":selector",$token[0]);
     $prpd_stmt->execute();
@@ -66,9 +66,9 @@ function find_user_by_token(string $token){
 
 function token_is_valid(string $token):bool{
     [$selector,$validator]=parse_token($token);
-    $tokens=find_user_by_token($selector);
+    $tokens=find_user_token_by_selector($selector);
     if(!$tokens){
-        return null;
+        return false;
     }
     
 
