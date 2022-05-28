@@ -58,7 +58,7 @@ function is_user_logged_in():bool{
         
         $user=find_user_by_token($token);
         if($user){
-            echo "ok ok";
+            
             $_SESSION["username"]=$user["username"];
             $_SESSION["id"]=$user["id"];
             return true;
