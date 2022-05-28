@@ -28,7 +28,7 @@ function find_user_by_username(string $username){
     
     return $prpd_stmt->fetch(PDO::FETCH_ASSOC);
 }
-function login(string $username,string $password):bool{
+function login(string $username,string $password,bool $remember=false):bool{
     $user=find_user_by_username($username);
     
     if($user && is_user_active($user) && password_verify($password,$user["password"])){
@@ -37,6 +37,9 @@ function login(string $username,string $password):bool{
 
         $_SESSION["username"]=$user["username"];
         $_SESSION["id"]=$user["id"];
+        if($remember){
+            remember_me($user["id"]);
+        }
         return true;
 
     }
@@ -45,8 +48,20 @@ function login(string $username,string $password):bool{
     }
 
 function is_user_logged_in():bool{
-
-    return isset($_SESSION["username"],$_SESSION["id"]);
+    $token=parse_token($_COOKIE["remember_me"]??"");
+    if(isset($_SESSION["username"],$_SESSION["id"])){
+        return true;
+    }
+    $token=filter_input(INPUT_COOKIE,"remember_me",FILTER_SANITIZE_STRING);
+    if($token && token_is_valid($token)){
+        $user=find_user_by_token($token);
+        if($user){
+            $_SESSION["username"]=$user["username"];
+            $_SESSION["id"]=$user["id"];
+            return true;
+        }
+    }
+    return false;
 }
 
 function require_login():void{
@@ -58,8 +73,18 @@ function require_login():void{
 
 function logout():void{
     if(is_user_logged_in()){
+        
+        delete_user_token($_SESSION["id"]);
+        
         unset($_SESSION["username"]);
         unset($_SESSION["id"]);
+
+        if(isset($_COOKIE["remember_me"])){
+            unset($_COOKIE["remember_me"]);
+            setcookie("remember_me",null,-1);
+        }
+
+
         session_destroy();
         redirect_to("login.php");
     }
@@ -150,6 +175,17 @@ function activate_user(int $id):bool{
     return $stmt->execute();
 
 
+}
+
+function remember_me(int $user_id,int $day=30){
+    [$selector,$validator,$token]=generate_tokens();
+    $expiry=time()+60*60*24*$day; //30 days expiry time by default
+    delete_user_token($user_id);//delete old tokens for current user
+
+    if(insert_user_token($user_id,$selector,$validator,date("Y-m-d H:i:s",$expiry))){
+        setcookie("remember_me",$token,$expiry);
+    }
+    
 }
 
 ?>

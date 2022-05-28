@@ -4,6 +4,7 @@
     
     require __DIR__."/../config/app.php";
     require __DIR__."/libs/connection.php";
+    require __DIR__."/remember.php";
     require __DIR__."/auth.php";
     require __DIR__."/libs/flash.php";
     require __DIR__."/libs/helpers.php";

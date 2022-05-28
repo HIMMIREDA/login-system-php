@@ -6,7 +6,9 @@
     $inputs=[];
 
     $fields=["password"=>"string | required",
-        "username" =>"string | required"];
+            "username" =>"string | required",
+            "remember_me"=>"string"
+            ];
     
     
 
@@ -16,7 +18,7 @@
         if($errors){
             redirect_with("login.php",["inputs"=>$inputs,"errors"=>$errors]);
         }
-        if(!login($inputs["username"],$inputs["password"])){
+        if(!login($inputs["username"],$inputs["password"],isset($inputs["remember_me"]))){
             
             $errors["login"]="Invalid username or password";
             redirect_with("login.php",["inputs"=>$inputs,"errors"=>$errors]);

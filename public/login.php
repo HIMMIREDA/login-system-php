@@ -1,4 +1,5 @@
 <?php
+
   require __DIR__."/../src/bootstrap.php";
   require __DIR__."/../src/login.php";
 
@@ -32,7 +33,13 @@
     
 
     
-    
+    <div class="mb-3 mt-2 form-check">
+      <label class="form-check-label" for="remember_me">
+        <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me" value="checked" <?= $inputs["remember_me"]??"" ?> >
+        Remember me
+      </label>
+      <small class="<?= error_class($errors,"remember_me"); ?>"></small>
+  </div>
 
     
     <footer class="mt-4 d-flex d-flex justify-content-between">
